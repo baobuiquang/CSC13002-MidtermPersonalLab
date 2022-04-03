@@ -20,10 +20,18 @@
             <a class="btn btn-primary  btn-sm btn-block" href="">Create Customer</a>
             <table class="table table-sm">
                 <tr>
-                    <th></th>
                     <th>Customer</th>
-                    <th>Orders</th>
+                    <th>Phone</th>
+                    <th>Email</th>
                 </tr>
+
+                {% for cstm in customers %}
+                <tr>
+                    <td>{{cstm.name}}</td>
+                    <td>{{cstm.phone}}</td>
+                    <td>{{cstm.email}}</td>
+                </tr>
+                {% endfor %}
 
             </table>
         </div>
@@ -35,12 +43,25 @@
             <a class="btn btn-primary  btn-sm btn-block" href="">Create Order</a>
             <table class="table table-sm">
                 <tr>
+                    <th>Customer</th>
                     <th>Product</th>
-                    <th>Date Orderd</th>
+                    <th>Created</th>
                     <th>Status</th>
                     <th>Update</th>
                     <th>Remove</th>
                 </tr>
+
+                {% for ord in orders %}
+                <tr>
+                    <td>{{ord.customer.name}}</td>
+                    <td>{{ord.product.name}}</td>
+                    <td>{{ord.date_created}}</td>
+                    <td>{{ord.status}}</td>
+                    <td><a href="#">Update</a></td>
+                    <td><a href="#">Remove</a></td>
+                </tr>
+                {% endfor %}
+
             </table>
         </div>
     </div>
