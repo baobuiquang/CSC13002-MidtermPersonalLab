@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.forms import inlineformset_factory
 
 from .models import *
 from .forms import *
@@ -60,6 +61,42 @@ def createOrder(request):
             request, 'accounts/order_form.html',
             {
                 'ord_form': ord_form,
+            }
+        )
+
+def createOrderForACustomer(request, customer_id):
+
+    OrderFormSet = inlineformset_factory(
+        Customer, Order,
+        fields = ('product', 'status'),
+        extra = 5,
+    )
+
+    cstm = Customer.objects.get(id = customer_id)
+
+    # ord_form = OrderForm(
+    #     initial = {'customer': cstm}  # same as createOrder, but pre-fill here
+    # )
+    ord_formset = OrderFormSet(
+        instance = cstm,                 # This will pre-fill, even with customer's old orders
+        queryset = Order.objects.none(), # This will hide the old orders
+    )
+
+    if request.method == 'POST':
+        print(f">> {request.POST}")
+        # ord_form = OrderForm(request.POST)
+        ord_formset = OrderFormSet(
+            request.POST,
+            instance = cstm,
+        )
+        if ord_formset.is_valid():
+            ord_formset.save()
+            return redirect('/')
+    else:
+        return render(
+            request, 'accounts/order_form.html',
+            {
+                'ord_form': ord_formset,
             }
         )
 
