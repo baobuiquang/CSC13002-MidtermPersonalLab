@@ -55,6 +55,7 @@
                     <th>Product</th>
                     <th>Created</th>
                     <th>Status</th>
+                    <th>Note</th>
                     <th>Update</th>
                     <th>Remove</th>
                 </tr>
@@ -65,6 +66,7 @@
                     <td>{{ord.product.name}}</td>
                     <td>{{ord.date_created}}</td>
                     <td>{{ord.status}}</td>
+                    <td>{{ord.note}}</td>
                     <td><a href="{% url 'update_order' ord.id %}">Update</a></td>
                     <td><a href="{% url 'delete_order' ord.id %}">Remove</a></td>
                 </tr>
