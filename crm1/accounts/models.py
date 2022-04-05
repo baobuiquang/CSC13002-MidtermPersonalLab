@@ -1,3 +1,4 @@
+from email.policy import default
 from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import User
@@ -34,7 +35,9 @@ class Product(models.Model):
 class Customer(models.Model):
 
     # 1-1 relationship
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+    
+    profile_pic = models.ImageField(default='logo.png', null=True, blank=True)
 
     name = models.CharField(max_length=200, null=True)
     phone = models.CharField(max_length=200, null=True)

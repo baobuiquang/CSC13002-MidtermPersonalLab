@@ -16,3 +16,9 @@ class CreateUserForm(UserCreationForm):
         model = User
         # fields = ['customer', 'product', 'date_created', 'status']
         fields = ['username', 'email', 'password1', 'password2']
+
+class CustomerForm(ModelForm):
+	class Meta:
+		model = Customer
+		fields = '__all__'
+		exclude = ['user']

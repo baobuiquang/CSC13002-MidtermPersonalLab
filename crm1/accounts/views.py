@@ -107,6 +107,34 @@ def userPage(request):
             }
     )
 
+
+
+
+@login_required(login_url='login')
+@allowed_user(allowed_roles = ['customer'])
+def accountSettings(request):
+
+    acc_form = CustomerForm(instance = request.user.customer)
+
+    if request.method == 'POST':
+        acc_form = CustomerForm(
+            request.POST,
+            request.FILES,
+            instance = request.user.customer,
+        )
+        if acc_form.is_valid():
+            acc_form.save()
+
+    return render(
+        request, 'accounts/account_settings.html',
+            {
+                'acc_form': acc_form,
+            }
+    )
+
+
+
+
 @login_required(login_url='login')
 # @allowed_user(allowed_roles = ['admin'])
 @admin_only
