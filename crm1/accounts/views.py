@@ -24,14 +24,14 @@ def registerPage(request):
         if reg_form.is_valid():
             user = reg_form.save()
 
-            # Initialize the user role
-            group = Group.objects.get(name = 'customer')
-            user.groups.add(group)
-
-            # Initialize the user 1-1 relationship
-            Customer.objects.create(
-                user = user # user in Customer model = user variable above
-            )
+            # # # ===== Handled by signals =====
+            # # Initialize the user role
+            # group = Group.objects.get(name = 'customer')
+            # user.groups.add(group)
+            # # Initialize the user 1-1 relationship
+            # Customer.objects.create(
+            #     user = user # user in Customer model = user variable above
+            # )
 
             messages.success(request, 'Account was created successfully!')
             return redirect('login')
