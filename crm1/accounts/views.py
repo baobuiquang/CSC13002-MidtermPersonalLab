@@ -24,8 +24,14 @@ def registerPage(request):
         if reg_form.is_valid():
             user = reg_form.save()
 
-            group = Group.objects.get(name = 'customer') # Initialize the user role
+            # Initialize the user role
+            group = Group.objects.get(name = 'customer')
             user.groups.add(group)
+
+            # Initialize the user 1-1 relationship
+            Customer.objects.create(
+                user = user # user in Customer model = user variable above
+            )
 
             messages.success(request, 'Account was created successfully!')
             return redirect('login')
@@ -85,11 +91,19 @@ def home(request):
     )
 
 @login_required(login_url='login')
+@allowed_user(allowed_roles = ['customer'])
 def userPage(request):
+
+    ords = request.user.customer.order_set.all()
+
     return render(
         request, 'accounts/user.html',
             {
-
+                'ords': ords,
+                # Stat
+                'total_orders': ords.count(),
+                'delivered_orders': ords.filter(status='Delivered').count(),
+                'pending_orders': ords.filter(status='Pending').count(),
             }
     )
 
